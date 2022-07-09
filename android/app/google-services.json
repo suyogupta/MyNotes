@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "302736887742",
+    "project_id": "shyam-mynotes-project",
+    "storage_bucket": "shyam-mynotes-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302736887742:android:be7b40188ba990b49ab3ef",
+        "android_client_info": {
+          "package_name": "com.suyogupta.mynotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302736887742-9nh0ish5erec58vrd4vuv8l1k3vvtmbd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfjmdM7cj0prqnu5i72LlJR3Ai_fwlUaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302736887742-9nh0ish5erec58vrd4vuv8l1k3vvtmbd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
