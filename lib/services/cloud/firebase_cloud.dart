@@ -53,7 +53,7 @@ class FirebaseCloudStorage {
       textFieldName: '',
     });
     final fetchedNote = await document.get();
-    return CloudNote(documentId: fetchedNote.id, ownerUserId: ownerUserId, text: '',title: titleName);
+    return CloudNote(documentId: fetchedNote.id, ownerUserId: ownerUserId, text: '',);
   }
 
   // Singleton

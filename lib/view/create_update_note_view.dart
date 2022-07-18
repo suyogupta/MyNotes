@@ -65,15 +65,15 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
       _textController.text = widgetNote.text;
       return widgetNote;
     }
-    final titleNameArg = context.getArgument<String>();
-    log(titleNameArg.toString());
-    if(titleNameArg==null)
-    {
-      _noteTitle = "Nothing Came";
-    }
-    else{
-    _noteTitle = titleNameArg;
-    }
+    // final titleNameArg = context.getArgument<String>();
+    // log(titleNameArg.toString());
+    // if(titleNameArg==null)
+    // {
+    //   _noteTitle = "Nothing Came";
+    // }
+    // else{
+    // _noteTitle = titleNameArg;
+    // }
     final existingNote = _note;
     if(existingNote != null)
     {
