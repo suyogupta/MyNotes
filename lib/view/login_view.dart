@@ -1,7 +1,14 @@
-import 'package:firebase_core/firebase_core.dart';
+// import 'dart:developer';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../firebase_options.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/services/auth/auth_exception.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
+// import 'package:mynotes/services/auth/auth_user.dart';
+import 'package:mynotes/utilities/dialog/error_dialog.dart';
+// import '../firebase_options.dart';
+// import '../utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -37,14 +44,7 @@ class _LoginViewState extends State<LoginView> {
       appBar: AppBar(
         title: const Text('Login'),
       ),
-
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Column(children: [
+      body:Column(children: [
                 TextField(
                   controller: _email,
                   enableSuggestions: false,
@@ -62,40 +62,72 @@ class _LoginViewState extends State<LoginView> {
                       hintText: 'Enter your password here'),
                 ),
                 TextButton(
-                    onPressed: () async {
-                      final email = _email.text;
-                      final password = _password.text;
-                      try {
-                        final usercredential = await FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
-                                email: email, password: password);
+                  onPressed: () async {
+                    final email = _email.text;
+                    final password = _password.text;
+                    try {
+                      // final usercredential = await FirebaseAuth.instance
+                      //     .signInWithEmailAndPassword(
+                      //   email: email,
+                      //   password: password,
+                      // );
+                      await AuthService.firbase().logIn(email: email, password: password);
+                      // final user = FirebaseAuth.instance.currentUser;
+                      final user = AuthService.firbase().currentUser;
+                      if (user?.isEmailVerified ?? false) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            notesRoute, (route) => false);
+                      } else {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            verifyEmailRoute, (route) => false);
+                      }
+                      // log(usercredential.toString());
+                    } 
+                    on UserNotFoundAuthException
+                    {
+                        await showErrorDialog(context, 'User not found');
 
-                        print(usercredential);
-                      } on FirebaseAuthException catch(e)
-                      {
-                        // print(e.code);
-                        if(e.code== 'user-not-code')
-                        {
-                          print('User not found');
-                        }
-                        else if (e.code=='wrong-password')
-                        {
-                          print('Wrong Password');
-                        }
-                      } 
-                      // catch (e) {
-                      //   print('something bad happend :(');
-                      //   print(e.runtimeType);
-                      //   print(e);
-                      // }
+                    }
+                    on WrongPasswordAuthException
+                    {
+                        await showErrorDialog(context, 'Wrong Password');
+
+                    }
+                    on GenericAuthException
+                    {
+                      await showErrorDialog(context, 'Authentication Error');
+                    }
+                    // on FirebaseAuthException catch (e) {
+                    //   // print(e.code);
+                    //   if (e.code == 'user-not-code') {
+                    //     await showErrorDialog(context, 'User not found');
+                    //   } else if (e.code == 'wrong-password') {
+                    //     await showErrorDialog(context, 'Wrong Password');
+                    //     // log('Wrong Password');
+                    //   } else {
+                    //     await showErrorDialog(context, 'Error ${e.code}');
+                    //   }
+                    // } 
+                    // catch (e) {
+                    //   // print('something bad happend :(');
+                    //   await showErrorDialog(context, 'Error ${e.toString()}');
+                    //   // print(e.runtimeType);
+                    //   // print(e);
+
+                    // }
+                  },
+                  child: const Text('Login'),
+                ),
+                TextButton(
+                    onPressed: () {
+                      // return const RegisterView();
+                      // we have specified a void function
+                      // We need a scaffold for register;
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          registerRoute, (route) => false);
                     },
-                    child: const Text('Login'))
-              ]);
-            default:
-              return const Text("Loading...");
-          }
-        },
-      ),
+                    child: const Text('Not registered yet? Register here!'))
+              ])
     );
   }
 }
